@@ -102,74 +102,7 @@ RUN cd "$XILINX_INSTALL_LOCATION/tmp/`basename --suffix=$HOST_TOOL_ARCHIVE_EXTEN
 
 FROM --platform=linux/amd64 ubuntu:22.04
 
-ENV DEBIAN_FRONTEND=noninteractive
-
-RUN echo "dash dash/sh boolean false" | debconf-set-selections
-RUN DEBIAN_FRONTEND=$DEBIAN_FRONTEND dpkg-reconfigure dash
-
-RUN apt-get update
-
-RUN apt-get install -y \
-    autoconf \
-    build-essential \
-    chrpath \
-    cpio \
-    diffstat \
-    expect \
-    fakeroot \
-    gawk \
-    gcc-multilib \
-    git \
-    gzip \
-    less \
-    libglib2.0-dev \
-    libgtk2.0-0 \
-    libgtk2.0-dev \
-    libncurses5-dev \
-    libsdl1.2-dev \
-    libtinfo5 \
-    libtool \
-    libtool-bin \
-    locales \
-    locales-all \
-    lsb-release \
-    make \
-    net-tools \
-    pax \
-    python3-gi \
-    rsync \
-    screen \
-    socat \
-    tar \
-    xorg \
-    xterm \
-    xvfb \
-    zlib1g-dev \
-    zlib1g-dev \
-    bison \
-    flex \
-    gnupg \
-    iproute2 \
-    libselinux1 \
-    libssl-dev \
-    texinfo \
-    tftpd \
-    tofrodos \
-    unzip \
-    update-inetd \
-    wget \
-    dos2unix
-
-# libboost-signals-dev
-RUN apt-get install -y \
-    google-perftools \
-    default-jre
-
-# TODO: filmil - there is a more canonical way to set the locale.
-RUN env LANG=en_US.UTF-8 locale-gen --purge en_US.UTF-8 \
-    && echo -e 'LANG="en_US.UTF-8"\nLANGUAGE="en_US:en"\n' > /etc/default/locale
-
-COPY --from=build /opt/Xilinx/ /opt/Xilinx/
+COPY --from=build /opt/Xilinx/2025.1/Vivado /opt/Xilinx/2025.1/Vivado
 
 VOLUME /src
 VOLUME /work
