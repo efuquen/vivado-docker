@@ -102,6 +102,21 @@ RUN cd "$XILINX_INSTALL_LOCATION/tmp/`basename --suffix=$HOST_TOOL_ARCHIVE_EXTEN
 
 FROM --platform=linux/amd64 ubuntu:22.04
 
+RUN apt-get update
+
+RUN apt-get install -y \
+    libtinfo5 \
+    locales \
+    locales-all \
+    libx11-6
+
+# TODO: filmil - there is a more canonical way to set the locale.
+RUN env LANG=en_US.UTF-8 locale-gen --purge en_US.UTF-8 \
+    && echo -e 'LANG="en_US.UTF-8"\nLANGUAGE="en_US:en"\n' > /etc/default/locale
+
+COPY --from=build /opt/Xilinx/2025.1/data /opt/Xilinx/2025.1/data
+COPY --from=build /opt/Xilinx/2025.1/tps /opt/Xilinx/2025.1/tps
+COPY --from=build /opt/Xilinx/2025.1/gnu /opt/Xilinx/2025.1/gnu
 COPY --from=build /opt/Xilinx/2025.1/Vivado /opt/Xilinx/2025.1/Vivado
 
 VOLUME /src
